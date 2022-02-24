@@ -1,44 +1,26 @@
-import { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-
-import { counterActions } from '../store/index';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { counterActions } from '../store/counter';
 import classes from './Counter.module.scss';
-
-
-//import { INCREMENT } from '../store/index';
 
 const Counter = () => {
   const dispatch = useDispatch();
-  const [increment, setIncrement] = useState(1);
-  const counter = useSelector((state: any) => state.counter);
-  const show = useSelector((state: any) => state.showCounter);
-
-
+  const counter = useSelector((state: any) => state.counter.counter);
+  const show = useSelector((state: any) => state.counter.showCounter);
 
   const incrementHandler = () => {
-    //dispatch({ type: INCREMENT })
     dispatch(counterActions.increment());
   };
 
   const decrementHandler = () => {
     dispatch(counterActions.decrement())
   };
-  const increaseHandler = () => {
-    //dispatch({ type: 'increase', amount: increment })
-    dispatch(counterActions.increase(increment))
-   
+
+  const increaseHandler = (val: number) => {
+    dispatch(counterActions.increase(val))
   };
-  // const increaseHandler = (val: number) => {
-  //   dispatch({ type: 'increase', amount: val })
-  // };
 
   const toggleCounterHandler = () => {
     dispatch(counterActions.toggleCounter())
-  };
-
-  const updateInputValue = (evt: any) => {
-    setIncrement(Number(evt.target.value));
   };
 
   return (
@@ -47,16 +29,12 @@ const Counter = () => {
       {show && <div className={classes.value}>{counter}</div>}
       <div>
         <button onClick={incrementHandler}>Increment</button>
+        <button onClick={() => increaseHandler(10)}>Increase by 10 </button>
         <button onClick={decrementHandler}>Decrement</button>
-        <div>
-          <button onClick={increaseHandler}>Increase by .. </button>
-          <input onChange={evt => updateInputValue(evt)} type="number" name="" id="" />
-        </div>
       </div>
       <button onClick={toggleCounterHandler}>Toggle Counter</button>
     </main>
   );
 };
-
 
 export default Counter;
